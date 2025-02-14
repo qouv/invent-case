@@ -45,7 +45,7 @@ export async function getUserInfoById (req: Request, res: Response) {
 		const allBorrewedBooks = await db.select()
 		.from(borrowedBooksTable)
 		.where(eq(borrowedBooksTable.user_id, Number(userId)))
-		console
+
 		const bookIds = allBorrewedBooks.map(book => book.book_id)
 		const bookDetailsMap = await db.select().from(booksTable).where(inArray(booksTable.id, bookIds))
 
