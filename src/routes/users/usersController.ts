@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
+import { db } from '../../db'
 
-export function createUser (req: Request, res: Response) {
+export async function createUser (req: Request, res: Response) {
 	res.send('Create user')
 }
 
