@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { db } from '../../db'
-import { usersTable } from '../../db/userSchema'
+import { usersTable } from '../../db/usersSchema'
 import { eq } from 'drizzle-orm'
 
 export async function createUser (req: Request, res: Response) {
@@ -30,7 +30,7 @@ export async function getUserById (req: Request, res: Response) {
 		const [user] = await db.select().from(usersTable).where(eq(usersTable.id, Number(id)))
 
 		if (!user) {
-			res.status(404).send('User not found')
+			res.status(404).json({ error: 'User not found' })
 			return
 		}
 
