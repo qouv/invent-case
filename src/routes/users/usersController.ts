@@ -1,14 +1,41 @@
 import { Request, Response } from 'express'
 import { db } from '../../db'
+import { usersTable } from '../../db/userSchema'
+import { eq } from 'drizzle-orm'
 
 export async function createUser (req: Request, res: Response) {
-	res.send('Create user')
+	try {
+		const [createdUser] = await db.insert(usersTable).values(req.cleanBody).returning()
+
+		res.status(201).json(createdUser)
+	} catch (e) {
+		res.status(500).send(e)
+	}
 }
 
-export function listUsers (req: Request, res: Response) {
-	res.send('List users')
+export async function listUsers (req: Request, res: Response) {
+	try {
+		const users = await db.select().from(usersTable)
+
+		res.json(users)
+	} catch (e) {
+		res.status(500).send(e)
+	}
 }
 
-export function getUserById (req: Request, res: Response) {
-	res.send('Get user by id')
+export async function getUserById (req: Request, res: Response) {
+	try {
+		const { id } = req.params
+
+		const [user] = await db.select().from(usersTable).where(eq(usersTable.id, Number(id)))
+
+		if (!user) {
+			res.status(404).send('User not found')
+			return
+		}
+
+		res.json(user)
+	} catch (e) {
+		res.status(500).send(e)
+	}
 }
