@@ -99,6 +99,28 @@ The API follows the structure defined in the provided Postman collection. Below 
 - `POST /users/:userId/borrow/:bookId` - Borrow a book
 - `POST /users/:userId/return/:bookId` - Return a book with a rating
 
+## Database Structure
+
+The application uses PostgreSQL as the database, with Drizzle ORM handling schema management and queries.
+
+### Tables
+
+#### `users`
+- `id` (integer, primary key, auto-incremented)
+- `name` (text, not null)
+
+#### `books`
+- `id` (integer, primary key, auto-incremented)
+- `name` (text, not null)
+
+#### `borrowed_books`
+- `id` (integer, primary key, auto-incremented)
+- `user_id` (integer, foreign key references `users.id`, not null)
+- `book_id` (integer, foreign key references `books.id`, not null)
+- `borrowed_at` (timestamp, not null)
+- `returned_at` (timestamp, nullable)
+- `score` (integer, nullable)
+
 ## Validation & Error Handling
 
 - **Zod** is used to validate API request payloads.
